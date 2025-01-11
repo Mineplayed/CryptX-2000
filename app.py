@@ -2,7 +2,7 @@ clear_message = input("Indiquez votre message à crypter : ")
 result = ""
 
 # Function to encrypte or decrypt message in ROT13
-def ROT13(clear):    
+def ROT13(clear, result):    
     # Loop for each letters
     for i in range(len(clear)):
         letter = clear[i]  
@@ -13,12 +13,13 @@ def ROT13(clear):
         else:
             result += chr((ord(letter) - 52) % 26 + 65)
     print(result)
-# ROT13(clear_message)
+# ROT13(clear_message, result)
 
 # Function to encrypt or decrypt message in Caesar Cipher
-def Caesar(clear):
+def Caesar(clear, result):
     # Ask for the offset of the encrypting
     offset = int(input("Indiquez le décalage : "))
+    
     
     # Loop for each letters 
     for i in range(len(clear)):
@@ -30,7 +31,7 @@ def Caesar(clear):
         else:
             result += chr((ord(letter) + offset - 65) % 26 + 65)
     print(result)
-# Caesar(clear_message)
+# Caesar(clear_message, result)
 
 # Function to encrypt or decrypt message in Vigenere Cipher
 def Vigenere(clear):
@@ -70,5 +71,36 @@ def Vigenere(clear):
         else:
             repeated_number_clear.append(str((ord(char) - 65) % 26 + 65))
     print(repeated_number_clear)
+    
+    number_key = []
+    count = 0
+    for i in repeated_key:
+        char = repeated_key[count]
+        count += 1
+        if (char.islower()):
+            number_key.append(str((ord(char) - 97) % 26 + 97))
+        else:
+            number_key.append(str((ord(char) - 65) % 26 + 65))
+    print(number_key)
+    
+    clear_number_encrypt = []
+    count = 0
+    for i in number_key:
+        number_char = int(repeated_number_clear[count])
+        number_key_merge = int(number_key[count])
+        count += 1
+        if (char.islower()):
+            clear_number_encrypt.append(str((number_char + number_key_merge - 97) % 26 + 97))
+        else:
+            clear_number_encrypt.append(str((number_char + number_key_merge - 65) % 26 + 65))
+    print(clear_number_encrypt)
+    
+    clear_encrypt = []
+    count = 0
+    for i in clear_number_encrypt:
+        number_char = int(clear_number_encrypt[count])
+        clear_encrypt.append(chr(number_char))
+        count += 1
+    print(clear_encrypt)
 
 Vigenere(clear_message)
