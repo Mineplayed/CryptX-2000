@@ -1,3 +1,5 @@
+from termcolor import colored, cprint
+
     ################
     # ROT13 Cipher #
     ################
@@ -22,8 +24,8 @@ def ROT13(clear, result):
 # Function to encrypt or decrypt message in Caesar Cipher
 def Caesar(clear, result):
     # Ask for the offset of the encrypting
-    offset = int(input("Indiquez le décalage : "))
-    choice = str(input("Voulez vous crypter ou décrypter votre message [C]/[D] ? "))
+    offset = int(input(colored("Indiquez le décalage: ", "light_green")))
+    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
     
     if choice == "C":
         # Loop for each letters in the message 
@@ -46,8 +48,10 @@ def Caesar(clear, result):
             else:
                 result += chr((ord(letter) - offset - 65) % 26 + 65)
     else:
-        print("Your choice must be : [C] or [D]")
-    print(result)
+        print(colored("Your choice must be : [C] or [D]", "red"))
+        
+    print(colored("Le résultat du cryptage est:", "green"))
+    print(colored(result, "green"))
 
     ###################
     # Vigenere Cipher #
@@ -206,10 +210,12 @@ def Decrypt_polybius(encrypt):
                 decrypt.append(chr_line[chr])
         result = "".join(decrypt)
         count += 1
-    print(result)
+        
+    print(colored("Le résultat du décryptage est:", "green"))
+    print(colored(result, "light_green"))
     
 def Polybius(clear):
-    choice = str(input("Voulez vous crypter ou décrypter votre message [C]/[D] ? "))
+    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "light_red")))
     
     if choice == "C":
         Encrypt_polybius(clear)
@@ -217,13 +223,13 @@ def Polybius(clear):
         Decrypt_polybius(clear)
         
 def App():
-    print("Vous pouvez choisir n'importe quelles méthodes de cryptages entre: ")
-    print("Le ROT13 -> [1]")
-    print("Le code César -> [2]")
-    print("Le chiffre de Vigenère -> [3]")
-    print("Le carré de Polybe -> [4]")
-    choice = str(input("Quel est votre choix: [1], [2], [3] ou [4] ? "))
-    clear_message = input("Indiquez votre message à crypter : ")
+    print(colored("Vous pouvez choisir n'importe quelles méthodes de cryptages entre: ", "blue"))
+    print(colored("Le ROT13 -> [1]", "blue"))
+    print(colored("Le code César -> [2]", "blue"))
+    print(colored("Le chiffre de Vigenère -> [3]", "blue"))
+    print(colored("Le carré de Polybe -> [4]", "blue"))
+    choice = str(input(colored("Quel est votre choix: [1], [2], [3] ou [4] ? ", "light_red")))
+    clear_message = input(colored("Indiquez votre message à crypter : ", "light_blue"))
     
     result = ""
     
@@ -238,7 +244,9 @@ def App():
             Decrypt_Vigenere(encrypt_msg, key, result)
         case "4":
             Polybius(clear_message)
-
+            
 App()
 
-# Rajouter colorama pour les couleurs
+# Rajouter termocolor pour les couleurs
+# Faire attention a etre en version X < 13.0
+# Install pip
