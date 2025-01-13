@@ -1,11 +1,8 @@
-clear_message = input("Indiquez votre message à crypter : ")
-result = ""
-
     ################
     # ROT13 Cipher #
     ################
 
-# Function to encrypte or decrypt message in ROT13
+# Function to encrypt or decrypt message in ROT13
 def ROT13(clear, result):    
     # Loop for each letters
     for i in range(len(clear)):
@@ -17,7 +14,6 @@ def ROT13(clear, result):
         else:
             result += chr((ord(letter) - 52) % 26 + 65)
     print(result)
-# ROT13(clear_message, result)
 
     #################
     # Caesar Cipher #
@@ -52,7 +48,6 @@ def Caesar(clear, result):
     else:
         print("Your choice must be : [C] or [D]")
     print(result)
-# Caesar(clear_message, result)
 
     ###################
     # Vigenere Cipher #
@@ -80,7 +75,6 @@ def Vigenere_key(clear):
             count += 1
     # Return the list with the repetition of the key, which is now as long as the message
     return repeated_key
-# key = Vigenere_key(clear_message)
 
 # Function to encrypt message in Vigenere Cipher
 def Encrypt_vigenere(clear, key, encrypt_msg):
@@ -106,7 +100,6 @@ def Encrypt_vigenere(clear, key, encrypt_msg):
     print(encrypt_msg)
     # Return the result of all the calculs that led to the encrypt message
     return encrypt_msg
-# encrypt_msg = Encrypt_vigenere(clear_message, key, result)
 
 # Function to decrypt the Vigenere Cypher
 # It takes the encrypted message, the repeated key and the string of the final result as parameters
@@ -131,8 +124,6 @@ def Decrypt_Vigenere(encrypted, key, decrypt_msg):
         else:
             decrypt_msg += encrypted[i]
     print(decrypt_msg)
-        
-# Decrypt_Vigenere(encrypt_msg, key, result)
 
     ###################
     # Polybius Square #
@@ -141,51 +132,113 @@ def Decrypt_Vigenere(encrypted, key, decrypt_msg):
 def Encrypt_polybius(clear):
     square_upper = ["ABCDEF", "GHIJKL", "MNOPQR", "STUVWX", "YZ0123", "456789"]
     square_lower = ["abcdef", "ghijkl", "mnopqr", "stuvwx", "yz0123", "456789"]
+    charL_list = []
     sliced_squareL = []
     sliced_squareU = []
     character = []
+    coord_char = []
     
     for i in clear:
         character.append(i)
-    print(character)
     
-    for i in square_lower:
+    for char_list in square_lower:
+        charL_list.append(char_list)
+
         squareL = []
-        for n in range(6):
-            squareL.append(i[n])
+        for i in range(6):
+            squareL.append(char_list[i])
         sliced_squareL.append(squareL)
         
-    for i in square_upper:
+    for char_list in square_upper:
         squareU = []
-        for n in range(6):
-            squareU.append(i[n])
+        for i in range(6):
+            squareU.append(char_list[i])
         sliced_squareU.append(squareU)
+
+    for letter in character:
+        line_count = 1  
+        
+        for line_char in sliced_squareL:
+            column_char = []
+            for i in range(len(line_char)):
+                column_char.append(line_char[i])
+                
+                if column_char[i] == letter:
+                    coord_char.append(line_count)
+                    coord_char.append(len(column_char))
+                
+                if i > 4:
+                    line_count += 1
+        
+        line_count = 1    
+        for line_char in sliced_squareU:
+            column_char = []
+            for i in range(len(line_char)):
+                column_char.append(line_char[i])
+                
+                if column_char[i] == letter:
+                    coord_char.append(line_count)
+                    coord_char.append(len(column_char))
+                
+                if i > 4:
+                    line_count += 1
             
-    print(sliced_squareL)
-    print(sliced_squareU)
+    print(coord_char)    
+
+def Decrypt_polybius(encrypt):
+    square = ["abcdef", "ghijkl", "mnopqr", "stuvwx", "yz0123", "456789"]
+    line = []
+    column = []
+    chr_line = []
+    decrypt = []
     
-    # for i in range(len(clear)):
-    #     character = str(clear[i])
-        
-    #     print(character)
-    #     for letter in square_lower:
-    #         print("GG")
-    #         for i in square_lower:
-    #             count = 0
-    #             index = 0
-    #             while count < 6 :
-    #                 print(count)
-    #                 if character == i[index]:
-    #                     print(character)
-    #                     count = 7
-    #                 else:
-    #                     index += 1
-    #                     count += 1
-    #             if character == i[index]:
-    #                 print(f"23 {character}")
-    #                 encrypt += character  
-    #         print(encrypt)              
-    # print(f"lol {encrypt}")
-        
+    for number in range(len(encrypt)):
+        if number%2 == 0 or number == 0:
+            line.append(int(encrypt[number]))
+        else:
+            column.append(int(encrypt[number]))
     
-Encrypt_polybius(clear_message)
+    count = 0
+    for l in line:
+        chr_line = square[l-1]
+        for chr in range(len(chr_line)):
+            if column[count] == chr + 1:
+                decrypt.append(chr_line[chr])
+        result = "".join(decrypt)
+        count += 1
+    print(result)
+    
+def Polybius(clear):
+    choice = str(input("Voulez vous crypter ou décrypter votre message [C]/[D] ? "))
+    
+    if choice == "C":
+        Encrypt_polybius(clear)
+    elif choice == "D":
+        Decrypt_polybius(clear)
+        
+def App():
+    print("Vous pouvez choisir n'importe quelles méthodes de cryptages entre: ")
+    print("Le ROT13 -> [1]")
+    print("Le code César -> [2]")
+    print("Le chiffre de Vigenère -> [3]")
+    print("Le carré de Polybe -> [4]")
+    choice = str(input("Quel est votre choix: [1], [2], [3] ou [4] ? "))
+    clear_message = input("Indiquez votre message à crypter : ")
+    
+    result = ""
+    
+    match choice:
+        case "1":
+            ROT13(clear_message, result)
+        case "2":
+            Caesar(clear_message, result)
+        case "3":
+            key = Vigenere_key(clear_message)
+            encrypt_msg = Encrypt_vigenere(clear_message, key, result) 
+            Decrypt_Vigenere(encrypt_msg, key, result)
+        case "4":
+            Polybius(clear_message)
+
+App()
+
+# Rajouter colorama pour les couleurs
