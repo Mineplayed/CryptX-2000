@@ -1,4 +1,4 @@
-from termcolor import colored, cprint
+from termcolor import colored
 
     ################
     # ROT13 Cipher #
@@ -15,7 +15,8 @@ def ROT13(clear, result):
         # Encrypt or decrypt upper letters
         else:
             result += chr((ord(letter) - 52) % 26 + 65)
-    print(result)
+    print(colored("Le résultat du cryptage est:", "green"))
+    print(colored(result, "light_green"))
 
     #################
     # Caesar Cipher #
@@ -37,6 +38,8 @@ def Caesar(clear, result):
             # Encrypt or decrypt upper letters
             else:
                 result += chr((ord(letter) + offset - 65) % 26 + 65)
+        print(colored("Le résultat du cryptage est:", "green"))
+        print(colored(result, "light_green"))
     elif choice == "D":
         # Loop for each letters in the message 
         for i in range(len(clear)):
@@ -47,11 +50,12 @@ def Caesar(clear, result):
             # Encrypt or decrypt upper letters
             else:
                 result += chr((ord(letter) - offset - 65) % 26 + 65)
+        print(colored("Le résultat du décryptage est:", "green"))
+        print(colored(result, "light_green"))
     else:
         print(colored("Your choice must be : [C] or [D]", "red"))
         
-    print(colored("Le résultat du cryptage est:", "green"))
-    print(colored(result, "green"))
+    
 
     ###################
     # Vigenere Cipher #
@@ -59,7 +63,7 @@ def Caesar(clear, result):
 
 # Function to generate the key and to make it as long as the message
 def Vigenere_key(clear):
-    key = str(input("Entrer votre clé de cryptage : "))
+    key = str(input(colored("Entrer votre clé de cryptage : ", "yellow")))
     repeated_key = []
     count = 0
     
@@ -101,13 +105,12 @@ def Encrypt_vigenere(clear, key, encrypt_msg):
         # If it's not a letter from the alphabet, it add to the string "encrypt_msg" the unchanged character from the message
         else:
             encrypt_msg += clear[i]
-    print(encrypt_msg)
-    # Return the result of all the calculs that led to the encrypt message
-    return encrypt_msg
+    print(colored("Le résultat du cryptage est:", "green"))
+    print(colored(encrypt_msg, "light_green"))
 
 # Function to decrypt the Vigenere Cypher
 # It takes the encrypted message, the repeated key and the string of the final result as parameters
-def Decrypt_Vigenere(encrypted, key, decrypt_msg):
+def Decrypt_vigenere(encrypted, key, decrypt_msg):
     
     for i in range(len(encrypted)):
         # Look if it's letter in the alphabet or not
@@ -127,42 +130,43 @@ def Decrypt_Vigenere(encrypted, key, decrypt_msg):
         # If it's not a letter from the alphabet, it add to the string "decrypt_msg" the unchanged character from the message
         else:
             decrypt_msg += encrypted[i]
-    print(decrypt_msg)
+    print(colored("Le résultat du décryptage est:", "green"))
+    print(colored(decrypt_msg, "light_green"))
 
     ###################
     # Polybius Square #
     ###################
     
 def Encrypt_polybius(clear):
-    square_upper = ["ABCDEF", "GHIJKL", "MNOPQR", "STUVWX", "YZ0123", "456789"]
-    square_lower = ["abcdef", "ghijkl", "mnopqr", "stuvwx", "yz0123", "456789"]
-    charL_list = []
-    sliced_squareL = []
-    sliced_squareU = []
-    character = []
+    upper_square = ["ABCDEF", "GHIJKL", "MNOPQR", "STUVWX", "YZ0123", "456789"]
+    lower_square = ["abcdef", "ghijkl", "mnopqr", "stuvwx", "yz0123", "456789"]
+    char_l_list= []
+    sliced_square_l = []
+    sliced_square_u = []
+    characters = []
     coord_char = []
     
     for i in clear:
-        character.append(i)
+        characters.append(i)
     
-    for char_list in square_lower:
-        charL_list.append(char_list)
+    for char_list in lower_square:
+        char_l_list.append(char_list)
 
         squareL = []
         for i in range(6):
             squareL.append(char_list[i])
-        sliced_squareL.append(squareL)
+        sliced_square_l.append(squareL)
         
-    for char_list in square_upper:
+    for char_list in upper_square:
         squareU = []
         for i in range(6):
             squareU.append(char_list[i])
-        sliced_squareU.append(squareU)
+        sliced_square_u.append(squareU)
 
-    for letter in character:
+    for letter in characters:
         line_count = 1  
         
-        for line_char in sliced_squareL:
+        for line_char in sliced_square_l:
             column_char = []
             for i in range(len(line_char)):
                 column_char.append(line_char[i])
@@ -175,7 +179,7 @@ def Encrypt_polybius(clear):
                     line_count += 1
         
         line_count = 1    
-        for line_char in sliced_squareU:
+        for line_char in sliced_square_u:
             column_char = []
             for i in range(len(line_char)):
                 column_char.append(line_char[i])
@@ -214,8 +218,18 @@ def Decrypt_polybius(encrypt):
     print(colored("Le résultat du décryptage est:", "green"))
     print(colored(result, "light_green"))
     
+def Vigenere(clear, result):
+    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
+    
+    if choice == "C":
+        key = Vigenere_key(clear)
+        Encrypt_vigenere(clear, key, result) 
+    elif choice == "D":
+        key = Vigenere_key(clear)
+        Decrypt_vigenere(clear, key, result)
+    
 def Polybius(clear):
-    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "light_red")))
+    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
     
     if choice == "C":
         Encrypt_polybius(clear)
@@ -223,13 +237,15 @@ def Polybius(clear):
         Decrypt_polybius(clear)
         
 def App():
-    print(colored("Vous pouvez choisir n'importe quelles méthodes de cryptages entre: ", "blue"))
-    print(colored("Le ROT13 -> [1]", "blue"))
-    print(colored("Le code César -> [2]", "blue"))
-    print(colored("Le chiffre de Vigenère -> [3]", "blue"))
-    print(colored("Le carré de Polybe -> [4]", "blue"))
+    print
+    
+    print(colored("Vous pouvez choisir n'importe quelles méthodes de cryptages entre: ", "light_blue"))
+    print(colored("Le ROT13 -> [1]", "light_blue"))
+    print(colored("Le code César -> [2]", "light_blue"))
+    print(colored("Le chiffre de Vigenère -> [3]", "light_blue"))
+    print(colored("Le carré de Polybe -> [4]", "light_blue"))
     choice = str(input(colored("Quel est votre choix: [1], [2], [3] ou [4] ? ", "light_red")))
-    clear_message = input(colored("Indiquez votre message à crypter : ", "light_blue"))
+    clear_message = input(colored("Indiquez votre message à crypter : ", "cyan"))
     
     result = ""
     
@@ -239,14 +255,14 @@ def App():
         case "2":
             Caesar(clear_message, result)
         case "3":
-            key = Vigenere_key(clear_message)
-            encrypt_msg = Encrypt_vigenere(clear_message, key, result) 
-            Decrypt_Vigenere(encrypt_msg, key, result)
+            Vigenere(clear_message, result)
         case "4":
             Polybius(clear_message)
             
 App()
 
-# Rajouter termocolor pour les couleurs
+# Rajouter termcolor pour les couleurs
 # Faire attention a etre en version X < 13.0
 # Install pip
+
+# Rajouter un ascii art au début pour présenter
