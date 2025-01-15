@@ -1,4 +1,6 @@
 from termcolor import colored
+from pyfiglet import Figlet
+import os
 
     ################
     # ROT13 Cipher #
@@ -15,8 +17,8 @@ def ROT13(clear, result):
         # Encrypt or decrypt upper letters
         else:
             result += chr((ord(letter) - 52) % 26 + 65)
-    print(colored("Le résultat du cryptage est:", "green"))
-    print(colored(result, "light_green"))
+    print(colored("Le résultat du cryptage est:", "blue"))
+    print(colored(result, "light_blue"))
 
     #################
     # Caesar Cipher #
@@ -38,8 +40,8 @@ def Caesar(clear, result):
             # Encrypt or decrypt upper letters
             else:
                 result += chr((ord(letter) + offset - 65) % 26 + 65)
-        print(colored("Le résultat du cryptage est:", "green"))
-        print(colored(result, "light_green"))
+        print(colored("Le résultat du cryptage est:", "blue"))
+        print(colored(result, "blue"))
     elif choice == "D":
         # Loop for each letters in the message 
         for i in range(len(clear)):
@@ -50,8 +52,8 @@ def Caesar(clear, result):
             # Encrypt or decrypt upper letters
             else:
                 result += chr((ord(letter) - offset - 65) % 26 + 65)
-        print(colored("Le résultat du décryptage est:", "green"))
-        print(colored(result, "light_green"))
+        print(colored("Le résultat du décryptage est:", "blue"))
+        print(colored(result, "light_blue"))
     else:
         print(colored("Your choice must be : [C] or [D]", "red"))
         
@@ -105,8 +107,8 @@ def Encrypt_vigenere(clear, key, encrypt_msg):
         # If it's not a letter from the alphabet, it add to the string "encrypt_msg" the unchanged character from the message
         else:
             encrypt_msg += clear[i]
-    print(colored("Le résultat du cryptage est:", "green"))
-    print(colored(encrypt_msg, "light_green"))
+    print(colored("Le résultat du cryptage est:", "blue"))
+    print(colored(encrypt_msg, "light_blue"))
 
 # Function to decrypt the Vigenere Cypher
 # It takes the encrypted message, the repeated key and the string of the final result as parameters
@@ -130,8 +132,8 @@ def Decrypt_vigenere(encrypted, key, decrypt_msg):
         # If it's not a letter from the alphabet, it add to the string "decrypt_msg" the unchanged character from the message
         else:
             decrypt_msg += encrypted[i]
-    print(colored("Le résultat du décryptage est:", "green"))
-    print(colored(decrypt_msg, "light_green"))
+    print(colored("Le résultat du décryptage est:", "blue"))
+    print(colored(decrypt_msg, "light_blue"))
 
     ###################
     # Polybius Square #
@@ -236,10 +238,12 @@ def Polybius(clear):
     elif choice == "D":
         Decrypt_polybius(clear)
         
-def App():
-    print
+def Presentation():
+    f = Figlet(font="standard")
+    print(colored(f.renderText("CryptX 2000"), "magenta"))
     
-    print(colored("Vous pouvez choisir n'importe quelles méthodes de cryptages entre: ", "light_blue"))
+    
+    print(colored("Vous pouvez choisir n'importe quelles méthodes de cryptages entre: ", "blue"))
     print(colored("Le ROT13 -> [1]", "light_blue"))
     print(colored("Le code César -> [2]", "light_blue"))
     print(colored("Le chiffre de Vigenère -> [3]", "light_blue"))
@@ -247,17 +251,30 @@ def App():
     choice = str(input(colored("Quel est votre choix: [1], [2], [3] ou [4] ? ", "light_red")))
     clear_message = input(colored("Indiquez votre message à crypter : ", "cyan"))
     
+    return choice, clear_message
+        
+def App():
+    os.system("cls")
+    
     result = ""
+    f = Figlet(font="bulbhead")
+    
+    choice, clear = Presentation()
+    os.system("cls")
     
     match choice:
         case "1":
-            ROT13(clear_message, result)
+            print(colored(f.renderText("ROT 13"), "magenta"))
+            ROT13(clear, result)
         case "2":
-            Caesar(clear_message, result)
+            print(colored(f.renderText("Ceasar"), "magenta"))
+            Caesar(clear, result)
         case "3":
-            Vigenere(clear_message, result)
+            print(colored(f.renderText("Vigenère"), "magenta"))
+            Vigenere(clear, result)
         case "4":
-            Polybius(clear_message)
+            print(colored(f.renderText("Polybe"), "magenta"))
+            Polybius(clear)
             
 App()
 
@@ -266,3 +283,5 @@ App()
 # Install pip
 
 # Rajouter un ascii art au début pour présenter
+
+# Au début il faut installer python 3.12, puis termcolor, puis pygfiglet a l'aide de pip
