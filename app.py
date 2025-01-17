@@ -56,8 +56,6 @@ def Caesar(clear, result):
         print(colored(result, "light_blue"))
     else:
         print(colored("Your choice must be : [C] or [D]", "red"))
-        
-    
 
     ###################
     # Vigenere Cipher #
@@ -139,37 +137,37 @@ def Decrypt_vigenere(encrypted, key, decrypt_msg):
     # Polybius Square #
     ###################
     
+# Function that encrypt with the vigenere cipher 
 def Encrypt_polybius(clear):
+    # Creation of the square i'll be using:
+    # 0, 1,2,3,4,5,6
+    # 1, a,b,c,d,e,f
+    # 2, g,h,i,j,k,l
+    # 3, m,n,o,p,q,r
+    # 4, s,t,u,v,w,x
+    # 5, y,z,0,1,2,3
+    # 6, 4,5,6,7,8,9
+    # For the uppercase letters then the lowercase letters
+    # Creation of all other variables
     upper_square = ["ABCDEF", "GHIJKL", "MNOPQR", "STUVWX", "YZ0123", "456789"]
     lower_square = ["abcdef", "ghijkl", "mnopqr", "stuvwx", "yz0123", "456789"]
-    char_l_list= []
-    sliced_square_l = []
-    sliced_square_u = []
     characters = []
     coord_char = []
     
+    # For each letter in the message, it adds it in the list characters
     for i in clear:
         characters.append(i)
-    
-    for char_list in lower_square:
-        char_l_list.append(char_list)
-
-        squareL = []
-        for i in range(6):
-            squareL.append(char_list[i])
-        sliced_square_l.append(squareL)
         
-    for char_list in upper_square:
-        squareU = []
-        for i in range(6):
-            squareU.append(char_list[i])
-        sliced_square_u.append(squareU)
-
+    # For each letter in the list characters, it resets the line counter to 1
     for letter in characters:
+        
+        #  For each line, it resets the variable column_char
         line_count = 1  
-        
-        for line_char in sliced_square_l:
+        for line_char in lower_square:
             column_char = []
+            # Adds every lines to the variable column_char and look each time 
+            # if the letter we're looking for is in the line,then,if it is, 
+            # it adds to the variable coord_char the line number then the column number of the letter in this line
             for i in range(len(line_char)):
                 column_char.append(line_char[i])
                 
@@ -177,49 +175,74 @@ def Encrypt_polybius(clear):
                     coord_char.append(line_count)
                     coord_char.append(len(column_char))
                 
+                # When i is on the last character it adds 1 to the line and it change the line
                 if i > 4:
                     line_count += 1
-        
-        line_count = 1    
-        for line_char in sliced_square_u:
-            column_char = []
-            for i in range(len(line_char)):
-                column_char.append(line_char[i])
-                
-                if column_char[i] == letter:
-                    coord_char.append(line_count)
-                    coord_char.append(len(column_char))
-                
-                if i > 4:
-                    line_count += 1
-            
-    print(coord_char)    
 
+        #  For each line, it resets the variable column_char and then do the same algorythm as the one just before but with uppercase letters
+        line_count = 1    
+        for line_char in upper_square:
+            column_char = []
+            for i in range(len(line_char)):
+                column_char.append(line_char[i])
+                
+                if column_char[i] == letter:
+                    coord_char.append(line_count)
+                    coord_char.append(len(column_char))
+                
+                if i > 4:
+                    line_count += 1
+        
+    # Print the result of the encrypt
+    print(colored("Le résultat du cryptage est:", "green"))
+    print(colored(coord_char, "light_green"))
+
+# Function to decrypt the polybius cipher
 def Decrypt_polybius(encrypt):
+    # Creation of the square i'll be using:
+    # 0, 1,2,3,4,5,6
+    # 1, a,b,c,d,e,f
+    # 2, g,h,i,j,k,l
+    # 3, m,n,o,p,q,r
+    # 4, s,t,u,v,w,x
+    # 5, y,z,0,1,2,3
+    # 6, 4,5,6,7,8,9
+    # Creation of all other variables
     square = ["abcdef", "ghijkl", "mnopqr", "stuvwx", "yz0123", "456789"]
     line = []
     column = []
     chr_line = []
     decrypt = []
     
+    # For each number of the encrypted message, look if it have an index which is pair, it adds its value to the variable line
     for number in range(len(encrypt)):
         if number%2 == 0 or number == 0:
             line.append(int(encrypt[number]))
+        # If its an index which is impair, it adds it to the column variable
         else:
             column.append(int(encrypt[number]))
     
+    # For each line in the list of lines, it assign to the variable chr_line the square coresponding line 
     count = 0
     for l in line:
         chr_line = square[l-1]
+        # For each character in the range of the line, it look if the column index correspond to the right character, otherwise it look on the next column
+        # Then it adds to the variable decrypt, the character coresponding the column in the line
         for chr in range(len(chr_line)):
             if column[count] == chr + 1:
                 decrypt.append(chr_line[chr])
+        # It erease all double quotes from the list
         result = "".join(decrypt)
         count += 1
-        
+    
+    # It print the result of the decrypt 
     print(colored("Le résultat du décryptage est:", "green"))
     print(colored(result, "light_green"))
     
+    #######
+    # App #
+    #######
+
 def Vigenere(clear, result):
     choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
     
@@ -279,7 +302,7 @@ def App():
 App()
 
 # Rajouter termcolor pour les couleurs
-# Faire attention a etre en version X < 13.0
+# Faire attention a etre en version 3.12
 # Install pip
 
 # Rajouter un ascii art au début pour présenter
