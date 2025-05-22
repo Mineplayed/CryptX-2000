@@ -1,7 +1,7 @@
+
 # Encrypting and Decrypting app
 
-I created this app for an NSI project at school and the goal was to make this app using the ROT13, Ceasar code, Vigenere cipher and the Polybius cipher. So this app can do all these encryptment methods.
-
+I created this app for an NSI project at school and the goal was to make this app using the ROT13, Ceasar code, Vigenere cipher and the Polybius cipher. SO this app can do all these encryptment methods.
 ## Installation
 
 To run the project you'll need three things:
@@ -48,6 +48,6 @@ cd path\to\your\folder
 ~~~
 Then you can run it by entering 
 ~~~
-python Cryptex_2000.py
+python app.py
 ~~~
 There you go, you should be running the app now !
