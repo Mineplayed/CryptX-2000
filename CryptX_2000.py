@@ -299,8 +299,14 @@ def Presentation():
     print(colored("Le code César -> [2]", "light_blue"))
     print(colored("Le chiffre de Vigenère -> [3]", "light_blue"))
     print(colored("Le carré de Polybe -> [4]", "light_blue"))
-    choice = str(input(colored("Quel est votre choix: [1], [2], [3] ou [4] ? ", "light_red")))
-    clear_message = input(colored("Indiquez votre message à crypter : ", "cyan"))
+    print(colored("Quitter -> [5]", "light_blue"))
+    
+    print("\n")
+    choice = str(input(colored("Quel est votre choix: [1], [2], [3], [4], [5] ? ", "light_red")))
+    
+    clear_message = ""
+    if(choice != "5"):
+        clear_message = input(colored("Indiquez votre message : ", "cyan"))
     
     return choice, clear_message
 
@@ -333,6 +339,12 @@ def App():
         case "4":
             print(colored(f.renderText("Polybe"), "magenta"))
             Polybius(clear)
+        case _:
+            return
+        
+    os.system("pause")
+
+    App()
 
 # Run the app function
 App()
