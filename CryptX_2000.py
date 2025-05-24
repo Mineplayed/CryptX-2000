@@ -1,6 +1,6 @@
-# Imports for the color with termcolor, for the Ascii art with pyfiglet and the os to clear the terminal
 from termcolor import colored
 from pyfiglet import Figlet
+from Functionnalities import valid_message, valid_method_number
 import os
 
     ################
@@ -8,7 +8,7 @@ import os
     ################
 
 # Function to encrypt or decrypt message in ROT13
-def ROT13(clear, result):    
+def ROT13(clear, result):
     # Loop for each letters
     for i in range(len(clear)):
         letter = clear[i]  
@@ -198,8 +198,7 @@ def Encrypt_polybius(clear):
 # Function to decrypt the polybius cipher
 def Decrypt_polybius(encrypt):
     # Creation of the square i'll be using:
-    # 0, 1,2,3,4,5,6
-    # 1, a,b,c,d,e,f
+    # 0, 1,2,3,4,5,6dee
     # 2, g,h,i,j,k,l
     # 3, m,n,o,p,q,r
     # 4, s,t,u,v,w,x
@@ -244,15 +243,14 @@ def Decrypt_polybius(encrypt):
 # Function to ask the user if he want to encrypt or decrypt the message
 # For the Vigenere Cipher
 def Vigenere(clear, result):
+    key = Vigenere_key(clear)
     choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
     
     # If the user want to encrypt it runs the key function then the encrypt function
-    if choice == "C":
-        key = Vigenere_key(clear)
+    if choice == "C" or choice == "c":
         Encrypt_vigenere(clear, key, result)
     # If the user want to decrypt it runs the key function then the decrypt function
-    elif choice == "D":
-        key = Vigenere_key(clear)
+    elif choice == "D" or choice == "d":
         Decrypt_vigenere(clear, key, result)
     else:
         # Print this as an error
@@ -263,14 +261,15 @@ def Polybius(clear):
     choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
     
     # If the user want to encrypt, it runs the function to encrypt
-    if choice == "C":
+    if choice == "C" or choice == "c":
         Encrypt_polybius(clear)
     # If the user want to decrypt, it runs the function to decrypt
-    elif choice == "D":
+    elif choice == "D" or choice == "d":
         Decrypt_polybius(clear)
     else:
         # Print this as an error
         print(colored("Your choice must be : [C] or [D]", "red"))
+        
 # And for the Caesar Cipher
 def Caesar(clear, result):
     # Ask for the offset of the encrypt
@@ -278,10 +277,10 @@ def Caesar(clear, result):
     choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
 
     # If the user want to encrypt, it runs the function to encrypt
-    if choice == "C":
+    if choice == "C" or choice == "c":
         Encrypt_caesar(clear, result, offset)
     # If the user want to decrypt, it runs the function to decrypt
-    elif choice == "D":
+    elif choice == "D" or choice == "d":
         Decrypt_caesar(clear, result, offset)
     else:
         # Print this as an error
@@ -289,6 +288,9 @@ def Caesar(clear, result):
         
 # Function to show the instructions and to choose the method and give the message
 def Presentation():
+    # Clear the terminal to make it prettier
+    os.system("cls")
+    
     # Print the name of the program with Asscii art
     f = Figlet(font="standard")
     print(colored(f.renderText("CryptX 2000"), "magenta"))
@@ -302,31 +304,56 @@ def Presentation():
     print(colored("Quitter -> [5]", "light_blue"))
     
     print("\n")
-    choice = str(input(colored("Quel est votre choix: [1], [2], [3], [4], [5] ? ", "light_red")))
+    methode_num = str(input(colored("Quel est votre choix: [1], [2], [3], [4], [5] ? ", "light_red")))
     
+    #Look if the methode_num is valid
+    # If the methode_num is not in the list, it print an error message and call the function again
+    if methode_num != "1" and methode_num != "2" and methode_num != "3" and methode_num != "4" and methode_num != "5":
+        # Print this as an error
+        validity = valid_method_number(methode_num)
+        
+        if validity == False:
+            #Print this as an error
+            return App()
+        
+        # Call the function again to ask for the method
+        return Presentation()
+    
+    # Look if we want to quit the program or not
     clear_message = ""
-    if(choice != "5"):
+    if(methode_num == "5"):
+        print(colored("Merci d'avoir utilisé CryptX 2000", "green"))
+        return methode_num, clear_message
+    else:
+        # Ask for the message to encrypt or decrypt
         clear_message = input(colored("Indiquez votre message : ", "cyan"))
+        
+        # Check if the message is valid
+        validity = valid_message(clear_message)
+        # If the message is not valid, it print an error message and call the function again
+        if validity == False    :
+            # Print this as an error
+            return App()
     
-    return choice, clear_message
+    return methode_num, clear_message
 
-# Function to run the whole program in the good order depending on the method choice
-def App():
-    # clear the terminal to make it prettier
-    os.system("cls")
+# Function to run the whole program in the good order depending on the method methode_num
+def App():    
+    #initialize the variable used to store the methode_num of the user
+    methode_num = ""
     
     # Variable used in every functions
     result = ""
     # Set the font the all Ascii arts except the presentation one
     f = Figlet(font="bulbhead")
     
-    # Run the presentation function and get the choice and the message
-    choice, clear = Presentation()
+    # Run the presentation function and get the methode_num and the message
+    methode_num, clear = Presentation()
     # clear the terminal to make it prettier
     os.system("cls")
     
-    # Use the match case method to run the right function depending on the choice
-    match choice:
+    # Use the match case method to run the right function depending on the methode_num
+    match methode_num:
         case "1":
             print(colored(f.renderText("ROT 13"), "magenta"))
             ROT13(clear, result)
@@ -339,20 +366,18 @@ def App():
         case "4":
             print(colored(f.renderText("Polybe"), "magenta"))
             Polybius(clear)
-        case _:
-            return
+        case "5":
+            print(colored("Merci d'avoir utilisé CryptX 2000", "green"))
+            exit()
         
+    print("lololololool")
+    # Ask if the user want to run the program again
     os.system("pause")
-
+    
+    methode_num = ""
+    
     App()
 
 # Run the app function
 App()
-
-# Rajouter termcolor pour les couleurs
-# Faire attention a etre en version 3.12
-# Install pip
-
-# Rajouter un ascii art au début pour présenter
-
-# Au début il faut installer python 3.12, puis termcolor, puis pygfiglet a l'aide de pip
+# End of the program
