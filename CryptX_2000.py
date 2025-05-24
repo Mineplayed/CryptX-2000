@@ -1,6 +1,6 @@
 from termcolor import colored
 from pyfiglet import Figlet
-from Functionnalities import valid_message, valid_method_number
+from Functionnalities import valid_message, valid_method_number, valid_shift ,type_choice
 import os
 
     ################
@@ -27,7 +27,7 @@ def ROT13(clear, result):
     #################
 
 # Function to encrypt message in Caesar Cipher
-def Encrypt_caesar(clear, result, offset):    
+def Encrypt_caesar(clear, result, offset): 
     # Loop for each letters in the message 
     for i in range(len(clear)):
         letter = clear[i]
@@ -244,48 +244,46 @@ def Decrypt_polybius(encrypt):
 # For the Vigenere Cipher
 def Vigenere(clear, result):
     key = Vigenere_key(clear)
-    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
+    choice = type_choice()
     
-    # If the user want to encrypt it runs the key function then the encrypt function
-    if choice == "C" or choice == "c":
+    # If the user want to encrypt, it runs the function to encrypt
+    if choice == "c":
         Encrypt_vigenere(clear, key, result)
-    # If the user want to decrypt it runs the key function then the decrypt function
-    elif choice == "D" or choice == "d":
+    # If the user want to decrypt, it runs the function to decrypt
+    elif choice == "d":
         Decrypt_vigenere(clear, key, result)
-    else:
-        # Print this as an error
-        print(colored("Your choice must be : [C] or [D]", "red"))
 
 # And for the Polybius Cipher
 def Polybius(clear):
-    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
+    choice = type_choice()
     
     # If the user want to encrypt, it runs the function to encrypt
-    if choice == "C" or choice == "c":
+    if choice == "c":
         Encrypt_polybius(clear)
     # If the user want to decrypt, it runs the function to decrypt
-    elif choice == "D" or choice == "d":
+    elif choice == "d":
         Decrypt_polybius(clear)
-    else:
-        # Print this as an error
-        print(colored("Your choice must be : [C] or [D]", "red"))
         
 # And for the Caesar Cipher
 def Caesar(clear, result):
     # Ask for the offset of the encrypt
-    offset = int(input(colored("Indiquez le décalage: ", "light_green")))
-    choice = str(input(colored("Voulez vous crypter ou décrypter votre message [C]/[D] ? ", "magenta")))
-
+    shift = input(colored("Indiquez le décalage: ", "light_green"))
+    
+    offset_check = valid_shift(shift)
+    # If the offset is not valid, it calls the function again
+    while offset_check == True:
+        shift = input(colored("Indiquez le décalage: ", "light_green"))
+        offset_check = valid_shift(shift)
+    
+    choice = type_choice()
+    
     # If the user want to encrypt, it runs the function to encrypt
-    if choice == "C" or choice == "c":
-        Encrypt_caesar(clear, result, offset)
+    if choice == "c":
+        Encrypt_caesar(clear, result, int(shift))
     # If the user want to decrypt, it runs the function to decrypt
-    elif choice == "D" or choice == "d":
-        Decrypt_caesar(clear, result, offset)
-    else:
-        # Print this as an error
-        print(colored("Your choice must be : [C] or [D]", "red"))
-        
+    elif choice == "d":
+        Decrypt_caesar(clear, result, int(shift))
+
 # Function to show the instructions and to choose the method and give the message
 def Presentation():
     # Clear the terminal to make it prettier
@@ -367,11 +365,13 @@ def App():
             print(colored(f.renderText("Polybe"), "magenta"))
             Polybius(clear)
         case "5":
+            f = Figlet(font="standard")
+            print(colored(f.renderText("CryptX 2000"), "magenta"))
             print(colored("Merci d'avoir utilisé CryptX 2000", "green"))
             exit()
-        
-    print("lololololool")
+    
     # Ask if the user want to run the program again
+    print("\n")
     os.system("pause")
     
     methode_num = ""
