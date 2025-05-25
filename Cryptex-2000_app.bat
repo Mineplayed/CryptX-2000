@@ -1,1 +1,0 @@
-python3 CryptX_2000.py %*
