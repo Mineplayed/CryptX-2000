@@ -19,7 +19,15 @@ python -v
 ~~~
 Then if it's the **3.12.8** version go to the next section, otherwise click on the previous link and install this version.
 
-## Create a virtual environnement
+# Install the *librairies*
+
+## With the installation file
+
+Double click  onto the *Installation.bat* file.
+
+## In the *CMD*
+
+### Create a virtual environnement
 
 First go in the CryptX-2000 folder using this command :
 
@@ -41,7 +49,7 @@ Then **activate** it :
 
 From now on you'll need to activate this venv each time you close the project and reopen it.
 
-## Pip installation
+### Pip installation
 
 Now before you install the 2 modules, let's check if you have any of the modules needed.
 
@@ -54,9 +62,14 @@ pip install -r requirement.txt
 Now you should have **both** needed modules, so let's go on the next section.
 You won't need to install this again if you keep opening the project in the **venv**.
 
-## Run the app
+# Run the app
 
-Now in the cmd you'll need to go in the folder of the app. To do so, you have to **follow** the tree to this folder:
+## Using the *launcher*
+
+Double click on the CryptX-2000_app.bat file.
+
+## In the *CMD*
+Or in the cmd you'll need to go in the folder of the app. To do so, you have to **follow** the tree to this folder:
 
 In the **cmd** enter this : 
 
