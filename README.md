@@ -19,11 +19,16 @@ python -v
 ~~~
 Then if it's the **3.12.8** version go to the next section, otherwise click on the previous link and install this version.
 
-# Install the *librairies*
+# Run the app
 
-## With the installation file
+## With the HUB file
 
-Double click  onto the *Installation.bat* file.
+Double click  onto the *Hub.bat* file.
+
+Then enter the number 1 to install all dependencies.   
+After that enter 2 to run the app.
+
+There you go, you should be running the app now !
 
 ## In the *CMD*
 
@@ -62,14 +67,9 @@ pip install -r requirement.txt
 Now you should have **both** needed modules, so let's go on the next section.
 You won't need to install this again if you keep opening the project in the **venv**.
 
-# Run the app
+### Run the app
 
-## Using the *launcher*
-
-Double click on the CryptX-2000_app.bat file.
-
-## In the *CMD*
-Or in the cmd you'll need to go in the folder of the app. To do so, you have to **follow** the tree to this folder:
+Now go in the app folder. To do so, you have to **follow** the tree to this folder:
 
 In the **cmd** enter this : 
 
